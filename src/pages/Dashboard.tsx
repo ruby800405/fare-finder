@@ -1,24 +1,18 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { Plane, LogOut, Radar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuthContext } from "@/lib/auth-context";
+import { usePageMeta } from "@/lib/use-page-meta";
 
-export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({
-    meta: [
-      { title: "Dashboard · Flight Price Notifier" },
-      {
-        name: "description",
-        content: "Manage your fare alerts. 管理你的機票降價通知。",
-      },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
-  component: DashboardPage,
-});
+export default function DashboardPage() {
+  usePageMeta({
+    title: "Dashboard · Flight Price Notifier",
+    description: "Manage your fare alerts. 管理你的機票降價通知。",
+    robots: "noindex",
+  });
 
-function DashboardPage() {
-  const { user } = Route.useRouteContext();
+  const { user } = useAuthContext();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -26,14 +20,14 @@ function DashboardPage() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+    navigate("/sign-in", { replace: true });
   }
 
   return (
     <div className="glow-violet min-h-screen bg-background text-foreground">
       <header className="border-b border-border/60 bg-background/70 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-          <Link to="/dashboard" className="flex items-center gap-2">
+          <Link to="/app" className="flex items-center gap-2">
             <span className="flex size-8 items-center justify-center rounded-lg bg-primary/15 text-primary">
               <Plane className="size-4" />
             </span>

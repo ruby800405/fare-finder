@@ -64,13 +64,51 @@ Continue developing this project in the [Lovable editor](https://lovable.dev/pro
 - **Stay in sync**: every change made in Lovable is committed straight to this repository.
 - **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
+## Stack
+
+Plain **Vite + React** single-page app — no SSR, no server runtime. `vite build`
+emits a fully static bundle to `dist/`.
+
+- **Routing**: React Router (`react-router-dom`), client-side only
+- **Auth**: Supabase email/password, browser SDK only
+- **Styling**: Tailwind CSS v4 + shadcn/ui, unchanged
+- **Data**: TanStack Query
+
+### Routes
+
+| Path | Page |
+| --- | --- |
+| `/` | Landing page |
+| `/sign-in` | Auth page, sign-in mode |
+| `/sign-up` | Auth page, sign-up mode |
+| `/app` | Dashboard (redirects to `/sign-in` when signed out) |
+| `/auth` → `/sign-in`, `/dashboard` → `/app` | Legacy redirects |
+
 ## Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+You need Node.js — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
 git clone <this-repository-url>
 cd <repository-name>
 npm i
-npm run dev
+npm run dev      # http://localhost:8080
+npm run build    # static output in dist/
+npm run preview  # serve the built bundle
 ```
+
+Copy the `VITE_SUPABASE_*` values from `.env` into your local environment (or
+keep the committed `.env`); only `VITE_`-prefixed variables reach the browser.
+
+## Deploying to Vercel
+
+`vercel.json` pins the static setup:
+
+- **Build command**: `vite build`
+- **Output directory**: `dist`
+- **Rewrites**: every path falls back to `/index.html`, so deep links such as
+  `/app` and `/sign-up` are resolved by React Router on the client instead of
+  404-ing at the edge.
+
+Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in the project's
+Environment Variables — they are inlined at build time.

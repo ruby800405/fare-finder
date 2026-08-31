@@ -1,28 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Plane, Bell, CircleSlash2, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Flight Price Notifier · 機票降價通知" },
-      {
-        name: "description",
-        content:
-          "設定航線與目標價，機票降價就通知你。Set a route and a target price — we email you when the fare drops.",
-      },
-      { property: "og:title", content: "Flight Price Notifier · 機票降價通知" },
-      {
-        property: "og:description",
-        content:
-          "設定航線與目標價，機票降價就通知你。We watch fares from Taipei and email you when they hit your target price.",
-      },
-      { property: "og:type", content: "website" },
-    ],
-  }),
-  component: LandingPage,
-});
+import { usePageMeta } from "@/lib/use-page-meta";
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -104,7 +84,7 @@ function Header() {
           </span>
         </Link>
         <Link
-          to={signedIn ? "/dashboard" : "/auth"}
+          to={signedIn ? "/app" : "/sign-in"}
           className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/25 transition hover:bg-primary/90"
         >
           {signedIn ? "Dashboard" : "Sign in / 登入"}
@@ -115,7 +95,13 @@ function Header() {
   );
 }
 
-function LandingPage() {
+export default function LandingPage() {
+  usePageMeta({
+    title: "Flight Price Notifier · 機票降價通知",
+    description:
+      "設定航線與目標價，機票降價就通知你。Set a route and a target price — we email you when the fare drops.",
+  });
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
@@ -150,7 +136,7 @@ function LandingPage() {
             style={{ animationDelay: "320ms" }}
           >
             <Link
-              to="/auth"
+              to="/sign-in"
               className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground shadow-xl shadow-primary/30 transition hover:scale-[1.02] hover:bg-primary/90"
             >
               Sign in / 登入
