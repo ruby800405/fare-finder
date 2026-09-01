@@ -54,24 +54,15 @@ display, payment, custom database tables (do NOT create a subscriptions or
 profiles table — only use Supabase's default auth.users). Those come in
 later milestones. Stick to landing page + auth + placeholder dashboard.
 
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/88fc7efc-8fb1-4071-9c20-c77580163a6b).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
 ## Stack
 
 Plain **Vite + React** single-page app — no SSR, no server runtime. `vite build`
 emits a fully static bundle to `dist/`.
 
 - **Routing**: React Router (`react-router-dom`), client-side only
-- **Auth**: Supabase email/password, browser SDK only
-- **Styling**: Tailwind CSS v4 + shadcn/ui, unchanged
+- **Backend**: Supabase project `pzridshqerbdxtktajtc` ("flight_fare_notifier") —
+  email/password auth via the browser SDK, no server runtime of our own
+- **Styling**: Tailwind CSS v4 + shadcn/ui
 - **Data**: TanStack Query
 
 ### Routes
@@ -97,8 +88,23 @@ npm run build    # static output in dist/
 npm run preview  # serve the built bundle
 ```
 
-Copy the `VITE_SUPABASE_*` values from `.env` into your local environment (or
-keep the committed `.env`); only `VITE_`-prefixed variables reach the browser.
+## Supabase
+
+The app talks to one Supabase project and nothing else. Credentials come from
+two environment variables — there are no hardcoded URLs or keys anywhere in
+`src/`, and `src/integrations/supabase/client.ts` is the only place a client is
+created (a lazily-initialised singleton, so exactly one client per page load).
+
+| Variable | Value |
+| --- | --- |
+| `VITE_SUPABASE_URL` | `https://pzridshqerbdxtktajtc.supabase.co` |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | `sb_publishable_…` |
+
+The publishable key is Supabase's current name for what used to be called the
+anon key: same role, browser-safe, gated by RLS. `.env.example` documents both;
+`.env` holds the working values. Only `VITE_`-prefixed variables reach the
+browser, and they are inlined at build time — so changing either one requires a
+rebuild, not just a restart.
 
 ## Deploying to Vercel
 
