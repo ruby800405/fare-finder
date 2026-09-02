@@ -24,7 +24,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="glow-violet min-h-screen bg-background text-foreground">
+    <div className="glow-pool min-h-screen bg-background text-foreground">
       <header className="border-b border-border/60 bg-background/70 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <Link to="/app" className="flex items-center gap-2">
@@ -58,7 +58,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="animate-fade-up mt-10 flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card/50 px-6 py-20 text-center" style={{ animationDelay: "120ms" }}>
+        <div className="animate-fade-up mt-10 flex flex-col items-center justify-center rounded-2xl border border-dashed border-input bg-card/70 px-6 py-20 text-center" style={{ animationDelay: "120ms" }}>
           <span className="mb-5 inline-flex size-14 items-center justify-center rounded-2xl bg-primary/15 text-primary">
             <Radar className="size-6" />
           </span>

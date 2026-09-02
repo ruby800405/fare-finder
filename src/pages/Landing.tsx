@@ -35,20 +35,29 @@ function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }
   );
 }
 
+const TONES = {
+  coral: { chip: "bg-primary/15 text-primary", label: "text-primary" },
+  pool: { chip: "bg-chart-2/30 text-pool-ink", label: "text-pool-ink" },
+  palm: { chip: "bg-chart-3/20 text-palm-ink", label: "text-palm-ink" },
+} as const;
+
 const FEATURES = [
   {
+    tone: "coral" as const,
     icon: Plane,
     title: "盯緊熱門航線",
     subtitle: "Always-on route watching",
     description: "持續監控台北出發的熱門航線（東京、首爾），自動抓最低票價。",
   },
   {
+    tone: "pool" as const,
     icon: Bell,
     title: "達標自動通知",
     subtitle: "Target-price email alerts",
     description: "低於你設定的目標價，就寄 email 提醒你，附上立即訂購連結。",
   },
   {
+    tone: "palm" as const,
     icon: CircleSlash2,
     title: "隨時取消",
     subtitle: "Cancel anytime",
@@ -79,9 +88,7 @@ function Header() {
           <span className="flex size-8 items-center justify-center rounded-lg bg-primary/15 text-primary">
             <Plane className="size-4" />
           </span>
-          <span className="text-sm font-semibold tracking-tight">
-            Flight Price Notifier
-          </span>
+          <span className="text-sm font-semibold tracking-tight">Flight Price Notifier</span>
         </Link>
         <Link
           to={signedIn ? "/app" : "/sign-in"}
@@ -107,14 +114,14 @@ export default function LandingPage() {
       <Header />
 
       {/* Hero */}
-      <section className="glow-violet relative overflow-hidden">
+      <section className="glow-pool relative overflow-hidden">
         <div className="mx-auto max-w-5xl px-6 pb-24 pt-24 text-center sm:pt-32">
-          <p className="animate-fade-up mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground">
+          <p className="animate-fade-up mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3.5 py-1.5 text-xs text-muted-foreground">
             <Plane className="size-3 text-primary" />
             台北出發 · 東京 / 首爾 熱門航線
           </p>
           <h1
-            className="animate-fade-up text-4xl font-extrabold tracking-tight sm:text-6xl"
+            className="animate-fade-up font-display text-5xl font-extrabold tracking-tight sm:text-7xl"
             style={{ animationDelay: "80ms" }}
           >
             Flight Price Notifier
@@ -131,10 +138,7 @@ export default function LandingPage() {
           >
             Set a route and a target price — we email you when the fare drops.
           </p>
-          <div
-            className="animate-fade-up mt-10"
-            style={{ animationDelay: "320ms" }}
-          >
+          <div className="animate-fade-up mt-10" style={{ animationDelay: "320ms" }}>
             <Link
               to="/sign-in"
               className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground shadow-xl shadow-primary/30 transition hover:scale-[1.02] hover:bg-primary/90"
@@ -147,24 +151,28 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="mx-auto max-w-5xl px-6 pb-28">
-        <div className="grid gap-5 sm:grid-cols-3">
-          {FEATURES.map((feature, i) => (
-            <Reveal key={feature.title} delay={i * 120}>
-              <div className="h-full rounded-2xl border border-border bg-card p-7 transition-colors hover:border-primary/40">
-                <span className="mb-5 inline-flex size-11 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                  <feature.icon className="size-5" />
-                </span>
-                <h2 className="text-lg font-semibold">{feature.title}</h2>
-                <p className="mt-1 text-sm font-medium text-primary/90">
-                  {feature.subtitle}
-                </p>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  {feature.description}
-                </p>
-              </div>
-            </Reveal>
-          ))}
+      <section className="pool-wash">
+        <div className="mx-auto max-w-5xl px-6 pb-28">
+          <div className="grid gap-5 sm:grid-cols-3">
+            {FEATURES.map((feature, i) => (
+              <Reveal key={feature.title} delay={i * 120}>
+                <div className="paint-card h-full rounded-2xl border border-border bg-card p-7 transition-colors hover:border-primary/50">
+                  <span
+                    className={`mb-5 inline-flex size-11 items-center justify-center rounded-xl ${TONES[feature.tone].chip}`}
+                  >
+                    <feature.icon className="size-5" />
+                  </span>
+                  <h2 className="text-lg font-semibold">{feature.title}</h2>
+                  <p className={`mt-1 text-sm font-medium ${TONES[feature.tone].label}`}>
+                    {feature.subtitle}
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {feature.description}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 

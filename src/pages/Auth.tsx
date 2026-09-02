@@ -69,7 +69,7 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
   }
 
   return (
-    <div className="glow-violet flex min-h-screen flex-col bg-background text-foreground">
+    <div className="glow-pool flex min-h-screen flex-col bg-background text-foreground">
       <header className="mx-auto flex h-16 w-full max-w-5xl items-center px-6">
         <Link to="/" className="flex items-center gap-2">
           <span className="flex size-8 items-center justify-center rounded-lg bg-primary/15 text-primary">
@@ -82,7 +82,7 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
       </header>
 
       <main className="flex flex-1 items-center justify-center px-6 pb-16">
-        <div className="animate-fade-up w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-2xl shadow-primary/5">
+        <div className="paint-card animate-fade-up w-full max-w-md rounded-2xl border border-border bg-card p-8">
           <h1 className="text-2xl font-bold tracking-tight">
             {mode === "signin" ? "Welcome back．登入" : "Create account．註冊"}
           </h1>

@@ -37,39 +37,57 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-pool-ink: var(--pool-ink);
+  --color-palm-ink: var(--palm-ink);
 }
 
+/*
+ * Palette sampled from the poolside oil painting: warm cream deck, coral
+ * umbrellas and sunglasses, aqua pool water, sage palms, and the near-black
+ * olive of the cat as the ink colour.
+ */
 :root {
-  --radius: 0.75rem;
-  --background: oklch(0.14 0.02 290);
-  --foreground: oklch(0.95 0.01 290);
-  --card: oklch(0.18 0.025 290);
-  --card-foreground: oklch(0.95 0.01 290);
-  --popover: oklch(0.18 0.025 290);
-  --popover-foreground: oklch(0.95 0.01 290);
-  --primary: oklch(0.63 0.22 292);
-  --primary-foreground: oklch(0.98 0.005 290);
-  --secondary: oklch(0.22 0.03 290);
-  --secondary-foreground: oklch(0.95 0.01 290);
-  --muted: oklch(0.22 0.03 290);
-  --muted-foreground: oklch(0.68 0.03 290);
-  --accent: oklch(0.24 0.045 292);
-  --accent-foreground: oklch(0.95 0.01 290);
-  --destructive: oklch(0.65 0.2 25);
-  --destructive-foreground: oklch(0.98 0.005 290);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.63 0.22 292);
-  --chart-1: oklch(0.63 0.22 292);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  --radius: 1rem;
+
+  --background: oklch(0.95 0.02 63); /* sun-warmed cream deck */
+  --foreground: oklch(0.27 0.026 127); /* deep olive-black, the cat */
+  --card: oklch(0.987 0.01 73); /* chalky highlight white */
+  --card-foreground: oklch(0.27 0.026 127);
+  --popover: oklch(0.987 0.01 73);
+  --popover-foreground: oklch(0.27 0.026 127);
+  --primary: oklch(0.668 0.166 33); /* coral — the red sunglasses */
+  --primary-foreground: oklch(0.983 0.011 63);
+  --secondary: oklch(0.928 0.017 178); /* pale poolside aqua */
+  --secondary-foreground: oklch(0.27 0.026 127);
+  --muted: oklch(0.917 0.023 65); /* sand */
+  --muted-foreground: oklch(0.574 0.027 145); /* sage shadow */
+  --accent: oklch(0.797 0.061 201); /* pool water */
+  --accent-foreground: oklch(0.27 0.026 127);
+  --destructive: oklch(0.558 0.167 33);
+  --destructive-foreground: oklch(0.983 0.011 63);
+  --border: oklch(0.864 0.033 61);
+  --input: oklch(0.835 0.038 61);
+  --ring: oklch(0.668 0.166 33);
+  --chart-1: oklch(0.668 0.166 33); /* coral */
+  --chart-2: oklch(0.774 0.071 205); /* pool teal */
+  --chart-3: oklch(0.626 0.071 130); /* palm green */
+  --chart-4: oklch(0.825 0.089 62); /* apricot */
+  --chart-5: oklch(0.808 0.096 24); /* chair pink */
+
+  /* Painterly extras, used by the utilities below. */
+  --sky: oklch(0.849 0.02 217);
+  /* Readable ink versions of the pool and palm colours, for small text. */
+  --pool-ink: oklch(0.52 0.09 205);
+  --palm-ink: oklch(0.5 0.075 132);
+  --canvas-shadow: oklch(0.5 0.06 210 / 26%);
 }
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    "Noto Sans TC", "PingFang TC", sans-serif;
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans TC", "PingFang TC",
+    sans-serif;
+  /* Latin-only display face — used on the hero wordmark, never on CJK text. */
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
 }
 
 @layer base {
@@ -82,17 +100,63 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+
+    /* Sun off the pool: aqua water up top, coral umbrellas to the right,
+       warm deck underfoot — the painting's own arrangement. */
+    background-image:
+      radial-gradient(ellipse 85% 62% at 8% 2%, oklch(0.82 0.1 200 / 78%), transparent 64%),
+      radial-gradient(ellipse 60% 45% at 52% 0%, oklch(0.86 0.08 196 / 52%), transparent 66%),
+      radial-gradient(ellipse 62% 52% at 99% 4%, oklch(0.8 0.13 34 / 52%), transparent 66%),
+      radial-gradient(ellipse 70% 40% at 88% 62%, oklch(0.83 0.09 22 / 34%), transparent 70%),
+      radial-gradient(ellipse 130% 45% at 45% 104%, oklch(0.9 0.06 28 / 40%), transparent 70%);
+    background-attachment: fixed;
+  }
+
+  /* Brushed canvas tooth, kept faint so text stays crisp. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.32;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23c)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  /* Keep every page's own content above the canvas texture. */
+  body > * {
+    position: relative;
+    z-index: 1;
   }
 }
 
-/* Subtle ambient glow used on hero / auth panels */
-@utility glow-violet {
+@utility font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+}
+
+/* Sunlit haze behind hero / auth panels — the light coming off the water. */
+@utility glow-pool {
   background:
-    radial-gradient(
-      ellipse 60% 50% at 50% 0%,
-      oklch(0.63 0.22 292 / 18%),
-      transparent 70%
-    );
+    radial-gradient(ellipse 66% 52% at 42% 0%, oklch(0.78 0.11 201 / 55%), transparent 70%),
+    radial-gradient(ellipse 48% 40% at 88% 4%, oklch(0.76 0.14 34 / 40%), transparent 72%);
+}
+
+/* Shallow end: a band of pool water behind lower page sections. */
+@utility pool-wash {
+  background:
+    radial-gradient(ellipse 78% 70% at 20% 40%, oklch(0.82 0.09 199 / 40%), transparent 68%),
+    radial-gradient(ellipse 55% 55% at 92% 74%, oklch(0.84 0.08 30 / 30%), transparent 70%);
+}
+
+/* Soft painted edge for raised surfaces. */
+@utility paint-card {
+  box-shadow:
+    0 1px 0 0 oklch(1 0 0 / 70%) inset,
+    0 18px 40px -24px var(--canvas-shadow),
+    0 2px 8px -4px var(--canvas-shadow);
 }
 
 /* Fade-in on scroll */
